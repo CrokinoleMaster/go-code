@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 // check if all characters are unique
@@ -138,19 +139,18 @@ func ZeroOut(m [][]int) [][]int {
 
 // checks if two strings are rotations of each other
 func IsRotation(s, _s string) bool {
+	l := len(s)
+	_l := len(_s)
+	if l != _l {
+		return false
+	}
+	s = s + s
+	if strings.Contains(s, _s) {
+		return true
+	}
 
 	return false
 }
 
 func main() {
-	m := [][]int{
-		{1, 2, 3, 0},
-		{1, 1, 3, 0},
-		{1, 1, 1, 1},
-	}
-	m = ZeroOut(m)
-	for _, r := range m {
-		fmt.Println(r)
-	}
-	fmt.Println()
 }

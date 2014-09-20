@@ -5,20 +5,47 @@ import (
 	"strconv"
 )
 
+// remove nodes with duplicate values
+func RemoveDups(l *LinkedList) *LinkedList {
+	for n := l.root.next; n != l.root; n = n.next {
+		for m := l.root.next; m != l.root; m = m.next {
+			if m.data == n.data && m != n {
+				l.RemoveNode(n)
+			}
+		}
+	}
+	return l
+}
+
 func main() {
 	l := NewLinkedList()
+	l.Push(5)
+	l.Push(5)
 	l.Push(1)
 	l.Push(2)
 	l.Push(3)
+	l.Push(2)
+	l.Push(8)
+	l.Push(3)
+	l.Push(2)
+	l.Push(2)
+	l.Push(4)
+	l.Push(4)
+	l.Push(2)
 	l.Push(4)
 	l.Push(5)
 	l.Push(6)
+	l.Push(8)
+	l.Push(8)
+	l.Push(7)
 	l.Push(7)
 	l.Push(8)
-	l.Remove(8)
-	l.Remove(4)
+	l.Push(8)
+	l.Push(8)
+	RemoveDups(l)
 
 	fmt.Println(l)
+	fmt.Println(l.len)
 }
 
 // integer linked list
@@ -105,6 +132,20 @@ func (l *LinkedList) Remove(i int) *LinkedList {
 	for n := l.root.next; n != l.root; n = n.next {
 		if n.next.data == i {
 			n.next = n.next.next
+			l.len--
+		}
+	}
+	return l
+}
+
+func (l *LinkedList) RemoveNode(e *Node) *LinkedList {
+	if l.len == 0 {
+		return l
+	}
+	for n := l.root.next; n != l.root; n = n.next {
+		if n.next == e {
+			n.next = n.next.next
+			l.len--
 		}
 	}
 	return l

@@ -1,12 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 )
 
 // remove nodes with duplicate values
-func RemoveDups(l *LinkedList) *LinkedList {
+func (l *LinkedList) RemoveDups() *LinkedList {
 	for n := l.root.next; n != l.root; n = n.next {
 		for m := l.root.next; m != l.root; m = m.next {
 			if m.data == n.data && m != n {
@@ -15,6 +16,25 @@ func RemoveDups(l *LinkedList) *LinkedList {
 		}
 	}
 	return l
+}
+
+// find kth to last without using lenth
+func (l *LinkedList) FromBack(i int) (*Node, error) {
+	if l.len <= i {
+		return nil, errors.New("index out of bounds")
+	}
+	count := 0
+	var m *Node
+	for n := l.root.next; n != l.root; n = n.next {
+		if count == i {
+			m = l.root.next
+		}
+		if count > i {
+			m = m.next
+		}
+		count++
+	}
+	return m, nil
 }
 
 func main() {
@@ -42,8 +62,7 @@ func main() {
 	l.Push(8)
 	l.Push(8)
 	l.Push(8)
-	RemoveDups(l)
-
+	l.RemoveDups()
 	fmt.Println(l)
 	fmt.Println(l.len)
 }

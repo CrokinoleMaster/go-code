@@ -1,4 +1,4 @@
-package main
+package str
 
 import (
 	"errors"
@@ -150,7 +150,4 @@ func IsRotation(s, _s string) bool {
 	}
 
 	return false
-}
-
-func main() {
 }

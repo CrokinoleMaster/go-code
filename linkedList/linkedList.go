@@ -37,6 +37,18 @@ func (l *LinkedList) FromBack(i int) (*Node, error) {
 	return m, nil
 }
 
+// delete node without head access
+// **does not update linkedlist length**
+func DeleteNode(n *Node) error {
+	m := n.next
+	if m == nil {
+		return errors.New("node is not in a list")
+	}
+	n.next = m.next
+	n.data = m.data
+	return nil
+}
+
 func main() {
 	l := NewLinkedList()
 	l.Push(5)

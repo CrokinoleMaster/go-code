@@ -37,6 +37,26 @@ func (l *LinkedList) FromBack(i int) (*Node, error) {
 	return m, nil
 }
 
+// partition a linked list around value i so that all nodes less than
+// i comes before all nodes greater or equal to i
+func (l *LinkedList) Partition(i int) *LinkedList {
+	for n := l.root.next; n != l.root; {
+		if n.data < i {
+			if n.next == l.root {
+				l.root = n
+			}
+			m := n.next
+			n.next = m.next
+			n.data, m.data = m.data, n.data
+			m.next = l.root.next
+			l.root.next = m
+		} else {
+			n = n.next
+		}
+	}
+	return l
+}
+
 // delete node without head access
 // **does not update linkedlist length**
 func DeleteNode(n *Node) error {
@@ -51,30 +71,27 @@ func DeleteNode(n *Node) error {
 
 func main() {
 	l := NewLinkedList()
-	l.Push(5)
-	l.Push(5)
-	l.Push(1)
-	l.Push(2)
-	l.Push(3)
-	l.Push(2)
-	l.Push(8)
-	l.Push(3)
-	l.Push(2)
-	l.Push(2)
-	l.Push(4)
-	l.Push(4)
-	l.Push(2)
 	l.Push(4)
 	l.Push(5)
 	l.Push(6)
+	l.Push(10)
+	l.Push(1)
+	l.Push(3)
+	l.Push(4)
 	l.Push(8)
+	l.Push(3)
+	l.Push(5)
+	l.Push(2)
 	l.Push(8)
+	l.Push(3)
 	l.Push(7)
-	l.Push(7)
 	l.Push(8)
-	l.Push(8)
-	l.Push(8)
-	l.RemoveDups()
+	l.Push(3)
+	l.Push(4)
+	l.Push(5)
+	// l.RemoveDups()
+	l.Partition(7)
+	// DeleteNode(l.root.next.next)
 	fmt.Println(l)
 	fmt.Println(l.len)
 }

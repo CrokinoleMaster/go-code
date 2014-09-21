@@ -69,31 +69,56 @@ func DeleteNode(n *Node) error {
 	return nil
 }
 
+// add two numbers represented by a linked list
+// ex) (7-> 1 -> 6) + (5 -> 9 -> 2) = (2 -> 1 -> 9)
+//       617		+	295			=	912
+func AddDecimalList(l, _l *LinkedList) *LinkedList {
+	res := NewLinkedList()
+	length := l.len
+	_length := _l.len
+	var long *LinkedList
+	var short *LinkedList
+	if length > _length {
+		long = l
+		short = _l
+	} else {
+		long = _l
+		short = l
+	}
+
+	for n, sn := long.root.next, short.root.next; n != long.root; n = n.next {
+		if sn != short.root {
+			sum := n.data + sn.data
+			if sum > 9 {
+				sum = sum - 10
+				if n.next != long.root {
+					n.next.data += 1
+				} else {
+					long.Push(1)
+				}
+			}
+			res.Push(sum)
+		} else {
+			res.Push(n.data)
+		}
+		sn = sn.next
+
+	}
+	return res
+}
+
 func main() {
 	l := NewLinkedList()
-	l.Push(4)
-	l.Push(5)
-	l.Push(6)
-	l.Push(10)
-	l.Push(1)
-	l.Push(3)
-	l.Push(4)
-	l.Push(8)
-	l.Push(3)
-	l.Push(5)
-	l.Push(2)
-	l.Push(8)
-	l.Push(3)
-	l.Push(7)
-	l.Push(8)
-	l.Push(3)
-	l.Push(4)
-	l.Push(5)
-	// l.RemoveDups()
-	l.Partition(7)
-	// DeleteNode(l.root.next.next)
+	l.Push(9)
+	l.Push(9)
+	l.Push(9)
+	s := NewLinkedList()
+	s.Push(9)
+	s.Push(9)
+	s.Push(9)
 	fmt.Println(l)
-	fmt.Println(l.len)
+	fmt.Println(s)
+	fmt.Println(AddDecimalList(l, s))
 }
 
 // integer linked list

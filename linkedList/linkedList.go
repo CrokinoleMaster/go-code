@@ -1,8 +1,7 @@
-package main
+package linkedList
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 )
 
@@ -107,18 +106,23 @@ func AddDecimalList(l, _l *LinkedList) *LinkedList {
 	return res
 }
 
-func main() {
-	l := NewLinkedList()
-	l.Push(9)
-	l.Push(9)
-	l.Push(9)
-	s := NewLinkedList()
-	s.Push(9)
-	s.Push(9)
-	s.Push(9)
-	fmt.Println(l)
-	fmt.Println(s)
-	fmt.Println(AddDecimalList(l, s))
+// checks if a given linked list is a palindrome
+func (l *LinkedList) isPalindrome() bool {
+	_l := NewLinkedList()
+	prev := _l.root
+	for n := l.root.next; n != l.root; n = n.next {
+		_n := &Node{data: n.data}
+		_l.root.next = _n
+		_n.next = prev
+		prev = _n
+	}
+	for n, _n := l.root.next, _l.root.next; n != l.root; n = n.next {
+		if n.data != _n.data {
+			return false
+		}
+		_n = _n.next
+	}
+	return true
 }
 
 // integer linked list

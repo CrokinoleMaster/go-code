@@ -9,17 +9,60 @@ import (
 type integer int
 
 func main() {
-	s := new(Stack)
-	s.Push(10)
-	s.Push(6)
-	s.Push(3)
-	fmt.Println(s.Min())
+}
+
+// a data structure that starts a new stack when the previous stack exceeds
+// a given threshold
+type SetOfStacks struct {
+	limit     int
+	currStack *Stack
+}
+
+func NewSetOfStacks(limit int) *SetOfStacks {
+	s := &SetOfStacks{limit: limit, currStack: new(Stack)}
+	return s
+}
+
+func (s *SetOfStacks) Push(i int) *SetOfStacks {
+	n := &node{next: s.currStack.top, data: i}
+	if s.currStack.length == s.limit {
+		st := new(Stack)
+		st.next = s.currStack
+		s.currStack = st
+		s.currStack.length = 0
+	}
+	s.currStack.top = n
+	s.currStack.length += 1
+	return s
+}
+
+func (s *SetOfStacks) Peek() (int, error) {
+	if s.currStack == nil {
+		return 0, errors.New("empty stack")
+	}
+	return s.currStack.top.data, nil
+}
+
+func (s *SetOfStacks) Pop() (int, error) {
+	if s.currStack.top == nil {
+		return 0, errors.New("empty stack")
+	}
+	res, err := s.currStack.Pop()
+	if err != nil {
+		fmt.Println("Pop error")
+	}
+	if s.currStack.length == 0 {
+		s.currStack = s.currStack.next
+	}
+	return res, nil
 }
 
 // integer stack implementation using linkedlist
 type Stack struct {
-	top *node
-	min int
+	top    *node
+	next   *Stack
+	min    int
+	length int
 }
 
 type node struct {
@@ -55,17 +98,23 @@ func (s *Stack) Push(i int) *Stack {
 	n := &node{next: nil, data: i}
 	n.next = s.top
 	s.top = n
+	s.length += 1
 	return s
 }
 
-func (s *Stack) Pop(i int) (int, error) {
+func (s *Stack) Pop() (int, error) {
 	if s.top == nil {
-		return 0, errors.New("Not found")
+		return 0, errors.New("empty stack")
 	}
+	res := s.top.data
 	s.top = s.top.next
-	return s.top.data, nil
+	s.length -= 1
+	return res, nil
 }
 
-func (s *Stack) Peek() int {
-	return s.top.data
+func (s *Stack) Peek() (int, error) {
+	if s.top == nil {
+		return 0, errors.New("empty stack")
+	}
+	return s.top.data, nil
 }

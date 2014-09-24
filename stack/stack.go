@@ -6,6 +6,27 @@ import (
 	"strconv"
 )
 
+// sort stack in ascending order using a temp stack
+func SortStack(s Stack) *Stack {
+	ss := new(Stack)
+	for i, n := s.Pop(); n == nil; i, n = s.Pop() {
+		count := 0
+		for t, err := ss.Peek(); i < t; t, err = ss.Peek() {
+			if err == nil {
+				n, _ := ss.Pop()
+				s.Push(n)
+				count++
+			}
+		}
+		ss.Push(i)
+		for ; count > 0; count-- {
+			i, _ := s.Pop()
+			ss.Push(i)
+		}
+	}
+	return ss
+}
+
 // a data structure that starts a new stack when the previous stack exceeds
 // a given threshold
 type SetOfStacks struct {

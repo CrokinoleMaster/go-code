@@ -1,15 +1,10 @@
-package main
+package stack
 
 import (
 	"errors"
 	"fmt"
 	"strconv"
 )
-
-type integer int
-
-func main() {
-}
 
 // a data structure that starts a new stack when the previous stack exceeds
 // a given threshold
